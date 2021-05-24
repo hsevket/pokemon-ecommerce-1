@@ -1,26 +1,48 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  border: 8px solid black;
-  border-radius: 8px;
   padding: 20px;
-  width: 200px;
-  aspect-ratio: 3 / 4;
-  background-color: white;
-
   :hover {
     cursor: pointer;
-    border-color: gold;
   }
 `;
 
-const Text = styled.p`
-font-family: monospace;
-  text-align: center;
+const Image = styled.img`
+  width: 300px;
+  background: #efeff0;
 `;
 
-const Name = styled(Text)`
-  margin-top: 18%;
+const Price = styled.p`
+  font-family: monospace;
+  font-size: 1.8rem;
+  margin: 0;
+`;
+
+const Name = styled.h2`
+  font-family: monospace;
+  font-size: 1.8rem;
+  margin: 0;
+  text-transform: uppercase;
+`;
+
+const DetailsButton = styled.button`
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  font-weight: 700;
+  margin: 24px 0 32px 0;
+  width: 100%;
+  background-color: black;
+  color: white;
+  outline: none;
+  display: inline-flex;
+  justify-content: center;
+  border: 0;
+  cursor: pointer;
+  padding: 24px 0;
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 export const PokemonCard = ({
@@ -29,8 +51,9 @@ export const PokemonCard = ({
   <Wrapper
     onClick={click}
   >
-    <img src={image} alt={name} />
+    <Image src={image} alt={name} />
     <Name>{name}</Name>
-    <Text>{price || '???'} &euro;</Text>
+    <Price>{price || '???'} &euro;</Price>
+    <DetailsButton>Details</DetailsButton>
   </Wrapper>
 );

@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import { PokemonCard } from "../common/PokemonCard";
+import { Loader } from "../common/Loader";
 
 const Container = styled.div`
   display: grid;
@@ -25,13 +26,23 @@ const FiltersContainer = styled.div`
   grid-template-rows: auto;
   grid-template-columns: auto 100px;
   grid-gap: 1rem;
+  justify-content: center;
 `;
 
 const Filter = styled.input`
   font-size: 23px;
 `;
 
-export const Overview = ({ data }) => {
+const NoResultsContainer = styled.div`
+  height: 150px;
+  width: 400px;
+  text-align: center;
+  border: 1px solid black;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+export const Overview = ({ data, isLoading }) => {
   const [filter, setFilter] = useState('');
   const [sorting, setSorting] = useState('');
   const history = useHistory();
@@ -68,6 +79,10 @@ export const Overview = ({ data }) => {
     return pokemons.filter((p) => p.name.includes(filter.toLowerCase()))
   }, [data, filter, sorting]);
 
+  if (isLoading) {
+    return <Loader />
+  }
+
   return (
     <Container>
       <FiltersContainer>
@@ -83,21 +98,30 @@ export const Overview = ({ data }) => {
           <option value="DESC">DESC</option>
         </select>
       </FiltersContainer>
-      <CardsWrapper>
-        {
-          filteredPokemons.map((pokemon, index) => (
-            <PokemonCard
-              key={pokemon.name}
-              image={`https://pokeres.bastionbot.org/images/pokemon/${
-                pokemon.url.replace('https://pokeapi.co/api/v2/pokemon/', '').replace('/', '')
-              }.png`}
-              name={pokemon.name}
-              click={() => handlePokemonClick(index + 1)}
-              price={pokemon.price}
-            />
-          ))
-        }
-      </CardsWrapper>
+      {
+        filteredPokemons.length ? (
+          <CardsWrapper>
+            {
+              filteredPokemons.map((pokemon, index) => (
+                <PokemonCard
+                  key={pokemon.name}
+                  image={`https://pokeres.bastionbot.org/images/pokemon/${
+                    pokemon.url.replace('https://pokeapi.co/api/v2/pokemon/', '').replace('/', '')
+                  }.png`}
+                  name={pokemon.name}
+                  click={() => handlePokemonClick(index + 1)}
+                  price={pokemon.price}
+                />
+              ))
+            }
+          </CardsWrapper>
+        ) : (
+          <NoResultsContainer>
+            <p>No pokemons found</p>
+            <p>Try another filter to see more results.</p>
+          </NoResultsContainer>
+        )
+      }
     </Container>
   );
 };

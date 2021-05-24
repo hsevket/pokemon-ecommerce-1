@@ -48,15 +48,24 @@ const Container = styled.div`
 
 const App = () => {
   const [pokemons, setPokemons] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
       .then((response) => response.json())
       .then(({ results }) => results.map((p, index) => ({
         ...p,
         price: (Math.random() * index + 1).toFixed(2)
       })))
-      .then((data) => setPokemons(data));
+      .then((data) => {
+        setPokemons(data);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setIsLoading(false);
+      });
   }, []);
 
   return (
@@ -85,6 +94,7 @@ const App = () => {
           <Route exact path="/">
             <Overview
               data={pokemons}
+              isLoading={isLoading}
             />
           </Route>
           <Route path="/shopping-cart">
