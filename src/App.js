@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { Overview } from "./Overview/Overview";
+import { Overview } from "./Overview";
 import { Checkout } from "./Checkout/Checkout";
 import { Details } from "./Details/Details";
 import { OrderCompleted } from "./OrderCompleted/OrderCompleted";
