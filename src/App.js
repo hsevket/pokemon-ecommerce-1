@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { Overview } from "./Overview/Overview";
+import { Overview } from "./Overview";
 import { Checkout } from "./Checkout/Checkout";
 import { Details } from "./Details/Details";
 import { OrderCompleted } from "./OrderCompleted/OrderCompleted";
@@ -13,33 +13,89 @@ const Title = styled.h1`
   color: palevioletred;
 `;
 
-export default function App() {
+const NavBar = styled.nav`
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #333;
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  li {
+    float: left;
+  }
+
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px 16px;
+    text-decoration: none;
+  }
+
+  li a:hover {
+    background-color: #111;
+  }
+`;
+
+const Container = styled.div`
+  overflow: hidden;
+`;
+
+const App = () => {
+  const [pokemons, setPokemons] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
+      .then((response) => response.json())
+      .then(({ results }) => results.map((p, index) => ({
+        ...p,
+        price: (Math.random() * index + 1).toFixed(2)
+      })))
+      .then((data) => {
+        setPokemons(data);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setIsLoading(false);
+      });
+  }, []);
+
   return (
     <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/shopping-cart">ShoppingCart</Link>
-            </li>
-            <li>
-              <Link to="/checkout">Checkout</Link>
-            </li>
-            <li>
-              <Link to="/order-completed">Order Completed</Link>
-            </li>
-            <li>
-              <Link to="/detail123">Detail</Link>
-            </li>
-          </ul>
-        </nav>
+      <NavBar>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/shopping-cart">ShoppingCart</Link>
+          </li>
+          <li>
+            <Link to="/order-completed">Order Completed</Link>
+          </li>
+        </ul>
         <Title>Pokemon ecommerce</Title>
+        <ul>
+          <li>
+            <Link to="/checkout">Checkout</Link>
+          </li>
+        </ul>
+      </NavBar>
+      <Container>
         <Switch>
           <Route exact path="/">
-            <Overview />
+            <Overview
+              data={pokemons}
+              isLoading={isLoading}
+            />
           </Route>
           <Route path="/shopping-cart">
             <ShoppingCart />
@@ -54,7 +110,9 @@ export default function App() {
             <Details />
           </Route>
         </Switch>
-      </div>
+      </Container>
     </Router>
   );
 }
+
+export default App;
