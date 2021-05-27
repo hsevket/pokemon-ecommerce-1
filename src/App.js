@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Overview } from "./Overview";
 import { Checkout } from "./Checkout/Checkout";
-import { Details } from "./Details/Details";
+import { Details } from "./Details";
 import { OrderCompleted } from "./OrderCompleted/OrderCompleted";
 import { ShoppingCart } from "./ShoppingCart/ShoppingCart";
 
@@ -11,6 +11,7 @@ const Title = styled.h1`
   font-size: 1.5em;
   text-align: center;
   color: palevioletred;
+  border-bottom: 1px solid #d0d1d3;
 `;
 
 const NavBar = styled.nav`
@@ -54,10 +55,12 @@ const App = () => {
     setIsLoading(true);
     fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
       .then((response) => response.json())
-      .then(({ results }) => results.map((p, index) => ({
-        ...p,
-        price: (Math.random() * index + 1).toFixed(2)
-      })))
+      .then(({ results }) =>
+        results.map((p, index) => ({
+          ...p,
+          price: (Math.random() * index + 1).toFixed(2),
+        }))
+      )
       .then((data) => {
         setPokemons(data);
         setIsLoading(false);
@@ -92,10 +95,7 @@ const App = () => {
       <Container>
         <Switch>
           <Route exact path="/">
-            <Overview
-              data={pokemons}
-              isLoading={isLoading}
-            />
+            <Overview data={pokemons} isLoading={isLoading} />
           </Route>
           <Route path="/shopping-cart">
             <ShoppingCart />
@@ -106,13 +106,13 @@ const App = () => {
           <Route path="/order-completed">
             <OrderCompleted />
           </Route>
-          <Route path="/:id">
+          <Route path="/pokemon/:id">
             <Details />
           </Route>
         </Switch>
       </Container>
     </Router>
   );
-}
+};
 
 export default App;
