@@ -56,10 +56,11 @@ const App = () => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
       .then((response) => response.json())
       .then(({ results }) =>
-        results.map((p, index) => ({
-          ...p,
-          price: (Math.random() * index + 1).toFixed(2),
-        }))
+        Promise.all(
+          results.map((r) =>
+            fetch(`https://pokeapi.co/api/v2/pokemon/${r.name}`)
+          )
+        ).then((responses) => Promise.all(responses.map((res) => res.json())))
       )
       .then((data) => {
         setPokemons(data);
@@ -107,7 +108,7 @@ const App = () => {
             <OrderCompleted />
           </Route>
           <Route path="/pokemon/:id">
-            <Details />
+            <Details data={pokemons} />
           </Route>
         </Switch>
       </Container>
