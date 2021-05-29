@@ -80,9 +80,6 @@ const App = () => {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/shopping-cart">ShoppingCart</Link>
-          </li>
-          <li>
             <Link to="/order-completed">Order Completed</Link>
           </li>
         </ul>

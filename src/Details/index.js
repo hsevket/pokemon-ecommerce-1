@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { DetailsLayout } from "./components/DetailsLayout";
 import { ImageSection } from "./components/ImageSection";
 import { ThumbnailSection } from "./components/ThumbnailSection";
 import { MetaSection } from "./components/MetaSection";
+import { addToCart } from "../common/pokemonStorage";
 
 const CrossSellingSection = styled.div`
   grid-area: crossselling;
@@ -19,6 +20,7 @@ export function Details() {
   const [data, setData] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
 
+  const history = useHistory();
   useEffect(() => {
     fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
       .then((res) => res.json())
@@ -30,6 +32,18 @@ export function Details() {
           );
       });
   }, [id]);
+
+  const handleAdd = () => {
+    addToCart({
+      img: data.sprites.other["official-artwork"].front_default,
+      name: data.name,
+      type: data.types[0].type.name,
+      price: data.base_experience,
+      quantity: 1,
+    });
+
+    history.push(`/shopping-cart`);
+  };
 
   if (!data) {
     return <span>Loading</span>;
@@ -59,6 +73,7 @@ export function Details() {
         price={data.base_experience}
         stats={data.stats}
         abilities={data.abilities}
+        onAddToCart={handleAdd}
       />
 
       <CrossSellingSection>

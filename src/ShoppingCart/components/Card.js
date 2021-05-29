@@ -21,13 +21,22 @@ const CardPriceStyle = styled.div`
   align-items: flex-end;
 `;
 
-export const Card = ({ name, img, type, price, quantity }) => (
+const RemoveStyle = styled.a`
+  color: black;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+export const Card = ({ name, img, type, price, quantity, onRemove }) => (
   <>
     <CardStyle>
       <img src={img} alt={name} />
       <div>
-        <p>{name}</p>
+        <strong>{name}</strong>
         <p>{type}</p>
+        <RemoveStyle onClick={onRemove}>Remove</RemoveStyle>
       </div>
       <CardPriceStyle>
         <p>{quantity}</p>
