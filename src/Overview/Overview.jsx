@@ -43,12 +43,12 @@ const NoResultsContainer = styled.div`
 `;
 
 export const Overview = ({ data, isLoading }) => {
-  const [filter, setFilter] = useState('');
-  const [sorting, setSorting] = useState('');
+  const [filter, setFilter] = useState("");
+  const [sorting, setSorting] = useState("");
   const history = useHistory();
 
   const handlePokemonClick = (id) => {
-    history.push(`/${id}`);
+    history.push(`/pokemon/${id}`);
   };
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
@@ -61,11 +61,13 @@ export const Overview = ({ data, isLoading }) => {
   const filteredPokemons = useMemo(() => {
     let pokemons = [];
     switch (sorting) {
-      case 'ASC':
+      case "ASC":
         pokemons = [...data].sort((a, b) => a.name.localeCompare(b.name));
         break;
-      case 'DESC':
-        pokemons = [...data].sort((a, b) => a.name.localeCompare(b.name)).reverse();
+      case "DESC":
+        pokemons = [...data]
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .reverse();
         break;
       default:
         pokemons = [...data];
@@ -74,13 +76,13 @@ export const Overview = ({ data, isLoading }) => {
 
     if (!filter.length) {
       return pokemons;
-    };
+    }
 
-    return pokemons.filter((p) => p.name.includes(filter.toLowerCase()))
+    return pokemons.filter((p) => p.name.includes(filter.toLowerCase()));
   }, [data, filter, sorting]);
 
   if (isLoading) {
-    return <Loader />
+    return <Loader />;
   }
 
   return (
@@ -98,30 +100,24 @@ export const Overview = ({ data, isLoading }) => {
           <option value="DESC">DESC</option>
         </select>
       </FiltersContainer>
-      {
-        filteredPokemons.length ? (
-          <CardsWrapper>
-            {
-              filteredPokemons.map((pokemon, index) => (
-                <PokemonCard
-                  key={pokemon.name}
-                  image={`https://pokeres.bastionbot.org/images/pokemon/${
-                    pokemon.url.replace('https://pokeapi.co/api/v2/pokemon/', '').replace('/', '')
-                  }.png`}
-                  name={pokemon.name}
-                  click={() => handlePokemonClick(index + 1)}
-                  price={pokemon.price}
-                />
-              ))
-            }
-          </CardsWrapper>
-        ) : (
-          <NoResultsContainer>
-            <p>No pokemons found</p>
-            <p>Try another filter to see more results.</p>
-          </NoResultsContainer>
-        )
-      }
+      {filteredPokemons.length ? (
+        <CardsWrapper>
+          {filteredPokemons.map((pokemon, index) => (
+            <PokemonCard
+              key={pokemon.name}
+              image={pokemon.sprites.other["official-artwork"].front_default}
+              name={pokemon.name}
+              click={() => handlePokemonClick(index + 1)}
+              price={pokemon.base_experience}
+            />
+          ))}
+        </CardsWrapper>
+      ) : (
+        <NoResultsContainer>
+          <p>No pokemons found</p>
+          <p>Try another filter to see more results.</p>
+        </NoResultsContainer>
+      )}
     </Container>
   );
 };
