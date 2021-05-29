@@ -64,7 +64,7 @@ const MetaSection = ({ type, name, price, stats, abilities }) => (
     <Title>{titleCase(name)}</Title>
 
     <Price>
-      {price} ¥ <PriceTax>VAT included</PriceTax>
+      {price} &euro; <PriceTax>VAT included</PriceTax>
     </Price>
 
     <BuyButton>Add to bag</BuyButton>

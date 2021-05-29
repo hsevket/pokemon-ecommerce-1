@@ -1,18 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
 import { DetailsLayout } from "./components/DetailsLayout";
 import { ImageSection } from "./components/ImageSection";
 import { ThumbnailSection } from "./components/ThumbnailSection";
 import { MetaSection } from "./components/MetaSection";
-
-const CrossSellingSection = styled.div`
-  grid-area: crossselling;
-  margin-top: 24px;
-  width: 100%;
-  height: 50px;
-`;
 
 export function Details() {
   const { id } = useParams();
@@ -60,10 +52,6 @@ export function Details() {
         stats={data.stats}
         abilities={data.abilities}
       />
-
-      <CrossSellingSection>
-        {/* Exercise: Add cards with more pokemon */}
-      </CrossSellingSection>
     </DetailsLayout>
   );
 }
