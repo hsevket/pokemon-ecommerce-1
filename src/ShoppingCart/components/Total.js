@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { HRStyle } from "./Hr";
 
 const TotalItemStyle = styled.div`
@@ -41,6 +42,7 @@ export const Total = ({ total }) => (
       <strong>{total}</strong>
     </TotalItemStyle>
     <HRStyle />
-    <CheckoutButton>Checkout</CheckoutButton>
+    <Link to="/checkout">
+    <CheckoutButton>Checkout</CheckoutButton></Link>
   </div>
 );

@@ -6,6 +6,7 @@ import { Checkout } from "./Checkout/Checkout";
 import { Details } from "./Details";
 import { OrderCompleted } from "./OrderCompleted/OrderCompleted";
 import { ShoppingCart } from "./ShoppingCart/ShoppingCart";
+import {Congradulation} from "./Congratulation";
 
 const Title = styled.h1`
   font-size: 1.5em;
@@ -97,6 +98,9 @@ const App = () => {
           </Route>
           <Route path="/shopping-cart">
             <ShoppingCart />
+          </Route>
+          <Route path="/congratulation">
+            <Congradulation />
           </Route>
           <Route path="/checkout">
             <Checkout />

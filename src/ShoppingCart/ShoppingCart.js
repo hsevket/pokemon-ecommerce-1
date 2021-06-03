@@ -30,6 +30,7 @@ export function ShoppingCart() {
   const handleRemove = (name) => {
     setCart(removeFromCart(name));
   };
+  
   if (cart.length === 0) {
     return (
       <LayoutStyle>
@@ -55,7 +56,7 @@ export function ShoppingCart() {
         </ScrollStyle>
       </PanelStyle>
       <PanelStyle>
-        <Total total={cart.reduce((acc, current) => acc + current.price, 0)} />
+        <Total total={cart.reduce((acc, current) => acc + current.price * current.quantity, 0)} />
       </PanelStyle>
     </LayoutStyle>
   );

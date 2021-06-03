@@ -29,6 +29,7 @@ export function Details() {
           .then((responses) => Promise.all(responses.map((res) => res.json())))
           .then((abilityData) =>
             setData({ ...pokemonData, abilities: abilityData })
+            
           );
       });
   }, [id]);

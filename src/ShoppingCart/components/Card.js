@@ -40,7 +40,7 @@ export const Card = ({ name, img, type, price, quantity, onRemove }) => (
       </div>
       <CardPriceStyle>
         <p>{quantity}</p>
-        <p>{price}</p>
+        <p>{price * quantity}</p>
       </CardPriceStyle>
     </CardStyle>
     <HRStyle />
