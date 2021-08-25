@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {useState} from "react";
+import { useReducer} from "react";
 // import {Link } from "react-router-dom";
 
 const InputWrapper = styled.form`
@@ -34,23 +34,44 @@ const InputWrapper = styled.form`
   }
 `;
 
+const formUpdater = (state, action) => {
+  switch(action.type){
+    case "NAME": 
+      return {...state, name: action.value }
+    case "SURNAME":
+      return {...state, surname: action.value }
+      case "ADDRESS":
+      return {...state, address: action.value }
+      case "CREDIT":
+      return {...state, credit: action.value }
+    default : 
+    return state 
+  }
+  
+  
+
+}
 
 export function Checkout() {
-const [name, setName] = useState();
-const [surname, setSurname] = useState();
-const [address, setAddress] = useState();
-const [credit, setCredit] = useState();
+const [state, dispatch] = useReducer(formUpdater, {
+  name: "",
+  surname: "",
+  address: "",
+  credit: "",
+}
+  )
 
   return <div>
     <InputWrapper action="/order-completed" >
-      <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}/>
-      <input type="text" placeholder="Surname" value={surname} onChange={(e) => setSurname(e.target.value)} />
-      <input type="text" placeholder="Adress" value={address} onChange={(e) => setAddress(e.target.value)}/>
-      <input type="number" placeholder="Credit Card Number" value={credit} onChange={(e) => setCredit(e.target.value)}/>
+      <input type="text" placeholder="Name" value={state.name} onChange={(e) => dispatch({type: "NAME", value: e.target.value})}/>
+      <input type="text" placeholder="Surname" value={state.surname} onChange={(e) => dispatch({type: "SURNAME", value: e.target.value})} />
+      <input type="text" placeholder="Adress" value={state.address} onChange={(e) => dispatch({type: "ADDRESS", value: e.target.value})}/>
+      <input type="number" placeholder="Credit Card Number" value={state.credit} onChange={(e) => dispatch({type: "CREDIT", value: e.target.value})}/>
       <button type="submit" onClick={() => {
-        const user = {name: name || '', surname: surname || '', credit: credit|| '', address: address|| '' };
-        localStorage.setItem('user', JSON.stringify(user));
+  
+        localStorage.setItem('user', JSON.stringify(state));
       }}>Place Order</button>
+      <p> {JSON.stringify(state)}</p>
     </InputWrapper>
   </div>
   
